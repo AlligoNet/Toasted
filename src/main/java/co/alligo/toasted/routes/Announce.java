@@ -6,10 +6,10 @@
 package co.alligo.toasted.routes;
 
 import co.alligo.toasted.Servers;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
@@ -20,7 +20,7 @@ import spark.Response;
  * @author Quinton
  */
 public class Announce {
-    public static String announce(Request req, Response res, Servers servers) throws IOException {
+    public static String announce(Request req, Response res, Servers servers) {
         JSONObject json = new JSONObject();
         JSONObject result = new JSONObject();
         String ip = req.ip();
@@ -43,19 +43,42 @@ public class Announce {
             servers.delServer(ip, port);
         } else {
             if (checkGameServer(ip, port)) {
+                servers.addServer(ip, port);
+                result.put("code", 0);
+                result.put("msg", "Added server to list.");
+                System.out.println("Added server to list"+ ip + ":" + port);
+                json.put("result", result);
+                return json.toJSONString();
                 
             } else {
-                
+                result.put("code", 0);
+                result.put("msg", "Failed to contact game server, are the ports open and forwarded correctly?");
+                json.put("result", result);
+                return json.toJSONString();
             }
         }
         
         return "500 Internal Server Error";
     }
     
-    public boolean checkGameServer(String ip, String port) throws MalformedURLException, IOException {
-        boolean result = false;
-        InputStream inputStream = new URL("http://" + ip + ":" + port + "/").openStream();
+    public static boolean checkGameServer(String ip, String port) {
+        boolean result;
+        URL             url;
+        URLConnection   urlConnection;
+        DataInputStream dis;
         
+        
+        
+        try {
+            url = new URL("http://" + ip + ":" + port +"/");
+            
+            urlConnection = url.openConnection();
+            urlConnection.connect();
+            
+            result = true;
+        } catch (IOException ioe) {
+            result = false;
+        }
         return result;
     }
 }

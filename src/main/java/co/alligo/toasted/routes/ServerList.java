@@ -8,9 +8,7 @@ package co.alligo.toasted.routes;
 import spark.Request;
 import spark.Response;
 import co.alligo.toasted.Servers;
-import java.util.Arrays;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
@@ -31,9 +29,6 @@ public class ServerList {
         result.put("servers", servers.getServers());
         
         response.put("result", result);
-        
-        
-        
         
         return (String)response.toJSONString();
     }

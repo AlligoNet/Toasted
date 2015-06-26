@@ -20,8 +20,6 @@ public class Servers {
     private int expirationTime;
     
     public Servers(int expireTime) {
-        addServer("test1", "9987");
-        addServer("test2", "9987");
         expirationTime = expireTime;
     }
     

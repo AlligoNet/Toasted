@@ -22,6 +22,8 @@ public class ServerList {
         JSONObject response = new JSONObject();
         JSONObject result = new JSONObject();
         
+        res.header("Content-Type", "application/json");
+        
         response.put("listVersion", 1);
         
         result.put("code", 0);

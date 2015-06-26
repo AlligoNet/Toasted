@@ -26,6 +26,8 @@ public class Announce {
         String ip = req.ip();
         String port;
         
+        res.header("Content-Type", "application/json");
+        
         if (!(req.headers("x-forwarded-for") == null)) {
             ip = req.headers("x-forwarded-for");
         }
